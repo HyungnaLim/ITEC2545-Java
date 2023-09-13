@@ -1,4 +1,4 @@
-package week2;
+package topic1;
 
 import java.util.Arrays;
 
