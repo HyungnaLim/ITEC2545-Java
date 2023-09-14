@@ -5,12 +5,12 @@ import static input.InputUtils.doubleInput;
 public class BusFares {
     public static void main(String[] args) {
 
-        int numberOfDays = 7;
+        String[] dayNames = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         double totalBusFare = 0;
 
         // set a loop for asking bus fares
-        for (int day=1; day<=numberOfDays; day++) {
-            double busFare = doubleInput("On day " + day + " of the week," +
+        for (int day=0; day<dayNames.length; day++) {
+            double busFare = doubleInput("On " + dayNames[day] + ", " +
                     "what did you spend on bus fares?");
             // add up each bus fare to the total as the loop repeats
             totalBusFare += busFare;
