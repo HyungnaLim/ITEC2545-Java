@@ -8,7 +8,7 @@ public class FinalVariable {
         final int NUMBER_OF_DAYS = 7;
 
         // when trying to rewrite the final variable, error occur
-        NUMBER_OF_DAYS = 8;
+        // NUMBER_OF_DAYS = 8;
 
     }
 }
