@@ -36,4 +36,3 @@ public class NullValues {
         }
     }
 }
-1
