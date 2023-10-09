@@ -61,5 +61,7 @@ public class States {
         }
         System.out.println(abbreviationStateNames);
 
+        // size method - how many entries in the hashmap
+        System.out.println("There are " + stateAbbreviations.size() + " states listed");
     }
 }
