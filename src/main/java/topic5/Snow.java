@@ -61,7 +61,7 @@ public class Snow {
         System.out.println("The snow in July is " + snowfall.get("July") + " inches");
 
 
-        // if-else statement using hashmap
+        // if-else statement using hashmap.containKey method
         if (snowfall.containsKey("July")) {
             System.out.println("There was snow in July!");
         } else {
