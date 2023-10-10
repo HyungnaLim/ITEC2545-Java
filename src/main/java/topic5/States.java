@@ -2,6 +2,7 @@ package topic5;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class States {
     public static void main(String[] args) {
@@ -9,10 +10,11 @@ public class States {
         // HashMap syntax
         // Map is generic type, it includes HashMap, HashTable, TreeMap
         // using Map makes the code more generic, and it makes easy to switch to other type of Map
+        // create new hashmap
         Map<String /*type of keys*/, Integer/*type of value*/> name /*name of hashmap*/ = new HashMap<>();
 
-        // create hashmap
-        HashMap<String, String> stateAbbreviations = new HashMap<>();
+        // if you want to keep the original order of data, use TreeMap instead of HashMap
+        Map<String, String> stateAbbreviations = new TreeMap<>();
         // if using double, use 'Double' with uppercase D, do not use primitive type 'double'
 
         // hashmap stores key-value pairs
