@@ -11,14 +11,23 @@ public class RoadTrip {
     public static void main(String[] args) {
 
         // create a hashmap of distance from Mpls to other cities in MN
-        Map<String, Integer> distanceToOtherCities = new HashMap<>();
+//        Map<String, Integer> distancesToOtherCities = new HashMap<>();
 
         // add example data
-        distanceToOtherCities.put("Duluth", 154);
-        distanceToOtherCities.put("Brainerd", 127);
-        distanceToOtherCities.put("Stillwater", 26);
-        distanceToOtherCities.put("Ely", 245);
-        distanceToOtherCities.put("Red Wing", 54);
+//        distancesToOtherCities.put("Duluth", 154);
+//        distancesToOtherCities.put("Brainerd", 127);
+//        distancesToOtherCities.put("Stillwater", 26);
+//        distancesToOtherCities.put("Ely", 245);
+//        distancesToOtherCities.put("Red Wing", 54);
+
+        // if you are not going to change the data in the hashmap, use Map.of to create new hashmap
+        // in this case, data is immutable (can't modify data)
+        Map<String, Integer> distancesToOtherCities = Map.of(
+                "Duluth", 154,
+                "Brainerd", 127,
+                "Stillwater",26,
+                "Ely", 245,
+                "Red Wing", 54);
 
         // asking for maximum distance
         int maxDistance = positiveIntInput("Enter the maximum distance you want to drive");
@@ -27,8 +36,8 @@ public class RoadTrip {
         List<String> citiesInRange = new ArrayList<>();
 
         // search and print all the cities within the maximum distance
-        for (String city : distanceToOtherCities.keySet()) {
-            int distance = distanceToOtherCities.get(city);
+        for (String city : distancesToOtherCities.keySet()) {
+            int distance = distancesToOtherCities.get(city);
             if (distance <= maxDistance) {
 //                System.out.println(city + " is " + distance + " miles away");
                 citiesInRange.add(city); // add the city within the range to the arraylist
