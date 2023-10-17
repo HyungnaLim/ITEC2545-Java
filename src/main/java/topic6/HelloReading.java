@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class HelloReading {
-    public static void main(String[] args) throws IOException /* avoid FileNotFoundException*/ {
+    public static void main(String[] args) throws IOException /* avoid FileNotFoundException error*/ {
 
         // FileReader can open, close, and read the file character by character
         FileReader reader = new FileReader("hello.txt");
