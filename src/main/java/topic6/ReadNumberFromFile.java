@@ -12,22 +12,26 @@ public class ReadNumberFromFile {
         List<Integer> numbers = new ArrayList<>();
         String filename = "numbers.txt";
 
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename));) {
 
-        String line = reader.readLine();
+            String line = reader.readLine();
 
-        while (line != null) {
-            // ignore anything that isn't integer
-            try {
-                int number = Integer.parseInt(line);
-                numbers.add(number);
-            } catch (NumberFormatException e) {
-                System.out.println(line + " is not an integer, ignoring");
+            while (line != null) {
+                // ignore anything that isn't integer
+                try {
+                    int number = Integer.parseInt(line);
+                    numbers.add(number);
+                } catch (NumberFormatException e) {
+                    System.out.println(line + " is not an integer, ignoring");
+                }
+                line = reader.readLine();
             }
-            line = reader.readLine();
+
+            System.out.println(numbers);
+
         }
-
-        System.out.println(numbers);
-
+        catch (IOException ioe) {
+            System.out.println("Error reading file " + ioe);
+        }
     }
 }
