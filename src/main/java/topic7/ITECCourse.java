@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class ITECCourse {
     // fields
-    String name;
-    int code;
-    ArrayList<String> students;
-    int max;
+    private String name;
+    private int code;
+    private ArrayList<String> students;
+    private int max;
 
     // constructor
-    ITECCourse(String courseName, int classCode, int maxStudents) {
+    public ITECCourse(String courseName, int classCode, int maxStudents) {
         name = courseName;
         code = classCode;
         max = maxStudents;
@@ -18,7 +18,7 @@ public class ITECCourse {
     }
 
     // methods - they must have return type
-    void addStudent(String studentName) {
+    public void addStudent(String studentName) {
         if (students.size() == max) {
             System.out.println("Course is full, can't add " + studentName);
         } else {
@@ -26,7 +26,7 @@ public class ITECCourse {
         }
     }
 
-    void writeCourseInfo() {
+    public void writeCourseInfo() {
         System.out.println("Course Name : " + name);
         System.out.println("Course Code : " + code);
         System.out.println("Students Enrolled:");
@@ -37,11 +37,11 @@ public class ITECCourse {
         System.out.println("The max number of students that can enroll in this course is " + max);
     }
 
-    int getNumberOfStudents() {
+    public int getNumberOfStudents() {
         return students.size();
     }
 
-    void removeStudent(String studentName) {
+    public void removeStudent(String studentName) {
         if (students.contains(studentName)) {
             students.remove(studentName);
             System.out.println(studentName + " was un-enrolled from " + name);
@@ -50,6 +50,32 @@ public class ITECCourse {
         }
     }
 
+    // to generate getter or setter - alt + insert (on Windows)
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) { // add some if statement
+        if (max < 0) {
+            return; // ignore and don't change the value
+        }
+        this.max = max;
+    }
 }

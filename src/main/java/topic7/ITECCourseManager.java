@@ -27,13 +27,17 @@ public class ITECCourseManager {
         softwareCourse.addStudent("Izzy");
 
         int total = softwareCourse.getNumberOfStudents();
-        System.out.println(softwareCourse.name + " class has " + total + " students");
+        System.out.println(softwareCourse.getName() + " class has " + total + " students");
 
-        // access to the variable value
-        System.out.println("ITEC " + softwareCourse.code + " " + softwareCourse.name);
+        // access to the variable value directly is not allowed when they are private
+        // can access only they are public but setting them as private and use getter or setter is encouraged
+        // so that the important data can't be modified easily
+//        System.out.println("ITEC " + softwareCourse.code + " " + softwareCourse.name);
+        System.out.println("ITEC " + softwareCourse.getCode() + " " + softwareCourse.getName());
 
-        // modifying variable value
-        softwareCourse.max = 30;
+//        softwareCourse.max = 30;
+        softwareCourse.setMax(30);
+
         softwareCourse.writeCourseInfo();
 
         maintenanceCourse.removeStudent("Carl");
