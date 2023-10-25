@@ -9,8 +9,9 @@ public class Pool {
     private String name; // field (variable)
     private double length; // another field
 
-    // constructor
+    // constructor - used to set up and initialize the object
     // This will allow us to create a pool object in our code
+    // It must have the same name as the class
     Pool (String poolName, double poolLength) {
         name = poolName;
         length = poolLength;
