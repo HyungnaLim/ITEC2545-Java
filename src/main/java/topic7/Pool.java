@@ -14,7 +14,7 @@ public class Pool {
     // It must have the same name as the class
     // a default constructor is always automatically call when object is created
     // default constructor have no arguments (empty parenthesis)
-    Pool (String poolName, double poolLength) {
+    public Pool (String poolName, double poolLength) {
         name = poolName;
         length = poolLength;
     }
