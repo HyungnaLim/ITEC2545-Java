@@ -1,5 +1,7 @@
 package topic10.movies;
 
+import java.util.List;
+
 import static input.InputUtils.*;
 
 public class MovieList {
@@ -9,10 +11,16 @@ public class MovieList {
     private static final String DB_PATH = "jdbc:sqlite:movie_watchlist.sqlite";
     private static Database database;
 
+
     public static void main(String[] args) {
         database = new Database(DB_PATH);
         addNewMovie();
+        checkIfWatchedAndRate();
+        deleteWatchedMoviesByName();
+        searchByName();
+        displayAllMovies();
     }
+
 
     public static void addNewMovie() {
         do {
@@ -28,6 +36,60 @@ public class MovieList {
 
 
         } while (yesNoInput("Add a movie to the watchlist?"));
+    }
+
+
+    public static void displayAllMovies() {
+        List<Movie> movies = database.getAllMovies();
+        if (movies.isEmpty()) {
+            System.out.println("No movies in the list");
+        } else {
+            for (Movie m : movies) {
+                System.out.println(m);
+            }
+        }
+    }
+
+
+    public static void checkIfWatchedAndRate() {
+        List<Movie> unwatchedMovies = database.getAllMoviesByWatched(false);
+
+        for (Movie m : unwatchedMovies) {
+            boolean hasWatched = yesNoInput("Have you watched " + m.getName() + " yet?");
+            if (hasWatched) {
+                int stars = positiveIntInput("What is your rating for " + m.getName() + " out of 5?");
+                m.setWatched(true);
+                m.setStars(stars);
+                database.updateMovie(m);
+            }
+        }
+    }
+
+
+    public static void deleteWatchedMoviesByName() {
+        System.out.println("Here are all the movies you have seen");
+        List<Movie> watchedMovies = database.getAllMoviesByWatched(true);
+        for (Movie m : watchedMovies) {
+            boolean delete = yesNoInput("Delete " + m.getName() + "?");
+            if (delete) {
+                database.deleteMovie(m);
+                System.out.println("successfully deleted");
+            }
+        }
+    }
+
+
+    public static void searchByName() {
+        String searchTerm = stringInput("Enter the movie name to search for");
+        List<Movie> movieMatches = database.searchMovie(searchTerm);
+
+        if (movieMatches.isEmpty()) {
+            System.out.println("No matches");
+        } else {
+            for (Movie m : movieMatches) {
+                System.out.println(m);
+            }
+        }
     }
 
 

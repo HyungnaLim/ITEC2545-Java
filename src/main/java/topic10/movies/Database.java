@@ -1,6 +1,8 @@
 package topic10.movies;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -46,6 +48,112 @@ public class Database {
             System.out.println("Error adding movie DB table because " + e);
         }
 
+    }
+
+    public List<Movie> getAllMovies() {
+        try (Connection connection = DriverManager.getConnection(databasePath);
+             Statement statement = connection.createStatement()) {
+
+            ResultSet movieResult = statement.executeQuery("SELECT * FROM movies ORDER BY name");
+
+            List<Movie> movies = new ArrayList<>();
+
+            while (movieResult.next()) {
+                String name = movieResult.getString("name");
+                int stars = movieResult.getInt("stars");
+                boolean watched = movieResult.getBoolean("watched");
+
+                Movie movie = new Movie(name, stars, watched);
+                movies.add(movie);
+            }
+
+            return movies;
+
+        } catch (SQLException sqle) {
+            System.err.println("Error querying movie DB table because " + sqle);
+            return null;
+        }
+
+    }
+
+    public List<Movie> getAllMoviesByWatched(boolean watchedStatus) {
+
+        try (Connection connection = DriverManager.getConnection(databasePath);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM movies WHERE watched = ?")) {
+
+            preparedStatement.setBoolean(1, watchedStatus);
+            ResultSet movieResults = preparedStatement.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+
+            while (movieResults.next()) {
+                String name = movieResults.getString("name");
+                int stars = movieResults.getInt("stars");
+                boolean watched = movieResults.getBoolean("watched");
+                Movie movie = new Movie(name, stars, watched);
+                movies.add(movie);
+            }
+
+            return movies;
+
+        } catch (SQLException sqle) {
+            System.err.println("Error querying movie DB table because " + sqle);
+            return null;
+        }
+    }
+
+    public void updateMovie(Movie movie) {
+        String sql = "UPDATE movies SET stars = ?, watched = ? WHERE name = ?";
+
+        try (Connection connection = DriverManager.getConnection(databasePath);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, movie.getStars());
+            preparedStatement.setBoolean(2, movie.isWatched());
+            preparedStatement.setString(3, movie.getName());
+
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            System.err.println("Error querying movie DB table because " + e);
+        }
+    }
+
+    public void deleteMovie(Movie movie) {
+        try (Connection connection = DriverManager.getConnection(databasePath);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE name = ?")) {
+
+            preparedStatement.setString(1, movie.getName());
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            System.err.println("Error querying movie DB table because " + e);
+        }
+    }
+
+    public List<Movie> searchMovie(String searchTerm) {
+        String sql = "SELECT * FROM movies WHERE upper(name) LIKE upper(?)";
+        try (Connection connection = DriverManager.getConnection(databasePath);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, "%" + searchTerm + "%"); // use % for partial matches
+            ResultSet movieResults = preparedStatement.executeQuery();
+
+            List<Movie> movies = new ArrayList<>();
+            while (movieResults.next()) {
+                String name = movieResults.getString("name");
+                int stars = movieResults.getInt("stars");
+                boolean watched = movieResults.getBoolean("watched");
+
+                Movie movie = new Movie(name, stars, watched);
+                movies.add(movie);
+            }
+            return movies;
+
+        } catch (SQLException e) {
+            System.err.println("Error querying movie DB table because " + e);
+            return null;
+        }
     }
 
 }

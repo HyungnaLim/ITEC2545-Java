@@ -39,4 +39,9 @@ public class Movie {
     public void setWatched(boolean watched) {
         this.watched = watched;
     }
+
+    @Override
+    public String toString() {
+        return "Movie name: " + name + " | Star: " + stars + " | Watched: " + watched;
+    }
 }
