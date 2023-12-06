@@ -9,17 +9,21 @@ public class Database {
     // SQL operations
 
     private String databasePath;
+
     Database(String databasePath) { // constructor
 
         this.databasePath = databasePath;
 
         // create table, or make sure it is created
 
-        try (
-                Connection connection = DriverManager.getConnection(databasePath);
-                Statement statement = connection.createStatement()) {
+        try (Connection connection = DriverManager.getConnection(databasePath);
+             Statement statement = connection.createStatement()) {
 
-            statement.execute("CREATE TABLE IF NOT EXISTS movies (name TEXT, stars INTEGER, watched BOOLEAN)");
+            statement.execute("CREATE TABLE IF NOT EXISTS " +
+                    "movies (id INTEGER PRIMARY KEY," +
+                    "name TEXT UNIQUE CHECK(length(name>= 1))," +
+                    "stars INTEGER CHECK(stars>=0 and stars<=5))," +
+                    "watched BOOLEAN)");
 
         } catch (SQLException e) {
             System.out.println("Error creating movie DB table because " + e);
@@ -27,12 +31,13 @@ public class Database {
 
     }
 
+
     public void addNewMovie(Movie movie) {
 
         // don't make SQL string that include strings from variables or use string formatting either
         // to prevent security problem and error
         // use PreparedStatement & parameterize data using question mark
-        String insertSQL = "INSERT INTO movies VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO movies (name, stars, watched) VALUES (?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(databasePath);
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -54,16 +59,17 @@ public class Database {
         try (Connection connection = DriverManager.getConnection(databasePath);
              Statement statement = connection.createStatement()) {
 
-            ResultSet movieResult = statement.executeQuery("SELECT * FROM movies ORDER BY name");
+            ResultSet movieResult = statement.executeQuery("SELECT * FROM movies ORDER BY id");
 
             List<Movie> movies = new ArrayList<>();
 
             while (movieResult.next()) {
+                int id = movieResult.getInt("id");
                 String name = movieResult.getString("name");
                 int stars = movieResult.getInt("stars");
                 boolean watched = movieResult.getBoolean("watched");
 
-                Movie movie = new Movie(name, stars, watched);
+                Movie movie = new Movie(id, name, stars, watched);
                 movies.add(movie);
             }
 
@@ -87,10 +93,11 @@ public class Database {
             List<Movie> movies = new ArrayList<>();
 
             while (movieResults.next()) {
+                int id = movieResults.getInt("id");
                 String name = movieResults.getString("name");
                 int stars = movieResults.getInt("stars");
                 boolean watched = movieResults.getBoolean("watched");
-                Movie movie = new Movie(name, stars, watched);
+                Movie movie = new Movie(id, name, stars, watched);
                 movies.add(movie);
             }
 
@@ -103,14 +110,14 @@ public class Database {
     }
 
     public void updateMovie(Movie movie) {
-        String sql = "UPDATE movies SET stars = ?, watched = ? WHERE name = ?";
+        String sql = "UPDATE movies SET stars = ?, watched = ? WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection(databasePath);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, movie.getStars());
             preparedStatement.setBoolean(2, movie.isWatched());
-            preparedStatement.setString(3, movie.getName());
+            preparedStatement.setInt(3, movie.getId());
 
             preparedStatement.execute();
 
@@ -121,9 +128,9 @@ public class Database {
 
     public void deleteMovie(Movie movie) {
         try (Connection connection = DriverManager.getConnection(databasePath);
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE name = ?")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM movies WHERE id = ?")) {
 
-            preparedStatement.setString(1, movie.getName());
+            preparedStatement.setInt(1, movie.getId());
             preparedStatement.execute();
 
         } catch (SQLException e) {
@@ -141,11 +148,12 @@ public class Database {
 
             List<Movie> movies = new ArrayList<>();
             while (movieResults.next()) {
+                int id = movieResults.getInt("id");
                 String name = movieResults.getString("name");
                 int stars = movieResults.getInt("stars");
                 boolean watched = movieResults.getBoolean("watched");
 
-                Movie movie = new Movie(name, stars, watched);
+                Movie movie = new Movie(id, name, stars, watched);
                 movies.add(movie);
             }
             return movies;

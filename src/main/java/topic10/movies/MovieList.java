@@ -22,14 +22,33 @@ public class MovieList {
     }
 
 
+    public static int getRatingOutOfFive() { // rating validation
+        int rating = positiveIntInput("What is your rating, in stars out of 5?");
+        while (rating < 0 || rating > 5 ) {
+            System.out.println("Error, enter a number between 0 and 5");
+            rating = positiveIntInput("What is your rating, in stars out of 5?");
+        }
+        return rating;
+    }
+
+
+    public static String getNonEmptyName() { // name validation
+        String name = stringInput("Enter the movie name");
+        while (name.isEmpty()) {
+            System.out.println("Error, enter a name");
+            name = stringInput("Enter the movie name");
+        }
+        return name;
+    }
+
+
     public static void addNewMovie() {
         do {
-            String movieName = stringInput("Enter the movie name");
+            String movieName = getNonEmptyName();
             boolean movieWatched = yesNoInput("Have you watched this movie yet?");
             int movieStars = 0;
             if (movieWatched) {
-                movieStars = positiveIntInput("What is your rating, in stars out of 5?");
-                // todo add validation, make sure number is between 0 and 5
+                movieStars = getRatingOutOfFive();
             }
             Movie movie = new Movie(movieName, movieStars, movieWatched);
             database.addNewMovie(movie);
@@ -44,6 +63,7 @@ public class MovieList {
         if (movies.isEmpty()) {
             System.out.println("No movies in the list");
         } else {
+            System.out.println("-- Movie List --");
             for (Movie m : movies) {
                 System.out.println(m);
             }

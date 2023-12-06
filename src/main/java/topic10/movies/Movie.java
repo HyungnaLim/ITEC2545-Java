@@ -4,13 +4,22 @@ public class Movie {
 
     // stores movie data for one movie
 
+    private int id;
     private String name;
     private int stars;
     private boolean watched;
 
 
-    // constructor
+    // constructor without id
     Movie(String name, int stars, boolean watched) {
+        this.name = name;
+        this.stars = stars;
+        this.watched = watched;
+    }
+
+    // constructor with id
+    Movie(int id, String name, int stars, boolean watched) {
+        this.id = id;
         this.name = name;
         this.stars = stars;
         this.watched = watched;
@@ -40,8 +49,12 @@ public class Movie {
         this.watched = watched;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return "Movie name: " + name + " | Star: " + stars + " | Watched: " + watched;
+        return "ID: " + id + " | Movie name: " + name + " | Star: " + stars + " | Watched: " + watched;
     }
 }
